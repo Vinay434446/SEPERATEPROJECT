@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Login</title>
+</head>
+<body class="bg-gradient-to-br from-indigo-50 to-indigo-200 min-h-screen flex items-center justify-center">
+  <div class="grid grid-cols-1 md:grid-cols-2 w-full max-w-5xl shadow-2xl rounded-3xl overflow-hidden">
+    <!-- Left Panel -->
+    <div class="relative h-96 md:h-auto">
+      <img src="https://www.aitm.edu.in/wp-content/uploads/2019/07/AITM-2-1024x683.jpg"
+           alt="AITM Campus"
+           class="object-cover w-full h-full" />
+      <div class="absolute inset-0 bg-gradient-to-tr from-purple-700 to-transparent opacity-40"></div>
+    </div>
+    <!-- Right Panel: Form -->
+    <div class="bg-white bg-opacity-60 backdrop-blur-md p-10 flex flex-col justify-center">
+      <h1 class="text-4xl font-bold text-gray-800 mb-8 text-center">Sign In</h1>
+      <% if (error) { %>
+        <div class="mb-4 text-red-600 text-center"><%= error %></div>
+      <% } %>
+      <form method="POST" action="/login" class="space-y-6">
+        <!-- Role -->
+        <div>
+          <label class="block text-gray-700 font-medium mb-1">Role</label>
+          <select name="role" id="roleSelect" required
+            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+            <option value="" disabled>Select your role</option>
+            <option value="student"<%= role==='student'?' selected':'' %>>Student</option>
+            <option value="teacher"<%= role==='teacher'?' selected':'' %>>Teacher</option>
+            <option value="advisor"<%= role==='advisor'?' selected':'' %>>Advisor</option>
+          </select>
+        </div>
+        <!-- Email -->
+        <div>
+          <label class="block text-gray-700 font-medium mb-1">Email</label>
+          <input type="email"
+                 name="email"
+                 id="emailField"
+                 value="<%= email||'' %>"
+                 required
+                 class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" />
+        </div>
+        <!-- Password -->
+        <div class="relative">
+          <label class="block text-gray-700 font-medium mb-1">Password</label>
+          <input type="password"
+                 name="password"
+                 id="passwordField"
+                 required
+                 class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition pr-12" />
+          <button type="button" id="togglePassword"
+                  class="absolute right-3 top-10 text-gray-500 hover:text-gray-700 focus:outline-none">
+            <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+            <svg id="eyeClosed" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.269-2.944-9.543-7a9.957 9.957 0 012.342-3.607M6.188 6.188C7.462 4.944 9.62 4 12 4c4.477 0 8.268 2.944 9.542 7a9.957 9.957 0 01-1.146 2.516M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 3l18 18" />
+            </svg>
+          </button>
+        </div>
+        <!-- Advisor extra fields -->
+        <div id="advisorFields" class="space-y-4 hidden">
+          <p class="text-gray-600 italic">As an Advisor, specify the class you manage:</p>
+          <div>
+            <label for="branch" class="block text-gray-700 font-medium mb-1">Branch</label>
+            <select id="branch" name="branch"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+              <option value="" disabled>Select branch</option>
+              <option value="CSE">CSE</option>
+              <option value="EC">EC</option>
+              <option value="EEE">EEE</option>
+              <option value="MECH">MECH</option>
+              <option value="CIVIL">CIVIL</option>
+            </select>
+          </div>
+          <div>
+            <label for="sem" class="block text-gray-700 font-medium mb-1">Semester</label>
+            <select id="sem" name="sem"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+              <option value="" disabled>Select semester</option>
+              <% for(let s=1; s<=8; s++) { %>
+                <option value="<%= s %>"><%= s %></option>
+              <% } %>
+            </select>
+          </div>
+          <div>
+            <label for="section" class="block text-gray-700 font-medium mb-1">Section</label>
+            <select id="section" name="section"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+              <option value="" disabled>Select section</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+            </select>
+          </div>
+        </div>
+        <!-- Submit -->
+        <button type="submit"
+                class="w-full bg-indigo-600 text-white py-3 rounded-xl font-semibold hover:bg-indigo-700 transition">
+          Log In
+        </button>
+      </form>
+      <div class="mt-8 flex justify-center space-x-4 text-sm">
+        <a href="/register"
+           class="px-4 py-2 bg-white border border-purple-600 text-purple-600 rounded-lg hover:bg-purple-50 transition">
+          Student Registration
+        </a>
+        <a href="/teacher/register"
+           class="px-4 py-2 bg-white border border-green-600 text-green-600 rounded-lg hover:bg-green-50 transition">
+          Teacher Registration
+        </a>
+        <a href="/advisor/register"
+           class="px-4 py-2 bg-white border border-purple-600 text-purple-600 rounded-lg hover:bg-purple-50 transition">
+          Advisor Registration
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Toggle password visibility
+    const pwdField = document.getElementById('passwordField');
+    const toggleBtn = document.getElementById('togglePassword');
+    const eyeOpen = document.getElementById('eyeOpen');
+    const eyeClosed = document.getElementById('eyeClosed');
+    toggleBtn.addEventListener('click', () => {
+      const isPwd = pwdField.type === 'password';
+      pwdField.type = isPwd ? 'text' : 'password';
+      eyeOpen.classList.toggle('hidden');
+      eyeClosed.classList.toggle('hidden');
+    });
+
+    // Show/hide advisor fields
+    const roleSelect = document.getElementById('roleSelect');
+    const advisorFields = document.getElementById('advisorFields');
+    roleSelect.addEventListener('change', () => {
+      if (roleSelect.value === 'advisor') {
+        advisorFields.classList.remove('hidden');
+        ['branch','sem','section'].forEach(id => document.getElementById(id).required = true);
+      } else {
+        advisorFields.classList.add('hidden');
+        ['branch','sem','section'].forEach(id => document.getElementById(id).required = false);
+      }
+    });
+  </script>
+</body>
+</html>
