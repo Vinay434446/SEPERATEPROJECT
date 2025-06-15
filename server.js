@@ -25,5 +25,8 @@ app.use('/', authRoutes);
 app.use('/dashboard', dashboardRoutes);
 
 // Start server
-const PORT = process.env.PORT || 3000;
+app.get('/', (req, res) => {
+  res.send('Welcome to the app!'); // or res.render('login');
+});
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
