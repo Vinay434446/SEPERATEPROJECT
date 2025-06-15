@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+
+router.get('/', ctrl.loginPage); // ✅ This handles GET /
 const {
   loginPage,
   loginPost,
@@ -26,3 +28,4 @@ router.get('/advisor/register', advisorRegisterPage);
 router.post('/advisor/register', advisorRegisterPost);
 
 module.exports = router;
+

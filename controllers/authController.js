@@ -133,5 +133,6 @@ module.exports = {
   teacherRegisterPage,
   teacherRegisterPost,
   advisorRegisterPage,
-  advisorRegisterPost
+  advisorRegisterPost,
+  showLogin
 };
