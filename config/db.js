@@ -3,10 +3,11 @@ let db;
 
 module.exports.initDB = () => {
   db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'newpassword',
-    database: 'attendancee',
+  host:     process.env.DB_HOST,
+  port:     Number(process.env.DB_PORT) || 3306,
+  user:     process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME,
     timezone: 'local',
     dateStrings: true
   });
